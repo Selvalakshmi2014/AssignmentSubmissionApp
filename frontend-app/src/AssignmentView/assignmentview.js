@@ -1,27 +1,27 @@
 import { useEffect, useState } from "react";
 import useLocalState from "../util/useLocalStorage";
+import Ajax from "../services/fetchService";
+import ajax from "../services/fetchService";
 
 const AssignmentView = () =>{
     const assignmentId = window.location.href.split('/assignments/')[1];
     const[jwt,setJwt] = useLocalState("","jwt");
-    const[assignment,setAssignment] = useState(null);
-    const[branch,setBranch] = useState("");
+    const[assignment,setAssignment] = useState({
+        githubUrl : "",
+        branch :""
+    });
+   
     
     const updateAssignment = (prop,value) => {
-        assignment[prop] = value;
-        console.log(assignment);
+        const newAssignment = {...assignment};
+        newAssignment[prop] = value;
+        setAssignment(newAssignment);
+        console.log("Inside Assignment View::  "+assignment);
     }
     function save(){
-        fetch('/api/assignments/'+assignmentId,{
-            headers :{
-                "Content-Type":"application/json",
-                AUTHORIZATION : 'Bearer '+jwt
-            },
-            method : "put",
-            body : JSON.stringify(assignment)
-        }).then(response => {
-            if(response.status === 200) return response.json();
-        }).then((assignmentData) => {
+        
+        ajax('/api/assignments/'+assignmentId,"put",jwt,assignment)
+        .then((assignmentData) => {
             setAssignment(assignmentData);
         });
     }
@@ -55,12 +55,15 @@ const AssignmentView = () =>{
                     <input type="url" id="githubUrl" 
                     onChange={(e) =>{
                     updateAssignment("githubUrl",e.target.value)}}
+
+                    value={assignment.githubUrl}
                     /></h3>
                 <h3>Branch : 
                     <input type="text" id="branch" 
                     onChange={(e) =>{
                   updateAssignment("branch",e.target.value)  
-                 }}/></h3>
+                 }}
+                 value={assignment.branch}/></h3>
                 <button onClick={()=>save()}>Submit Assignment</button>
                 </> ): <></>
             }

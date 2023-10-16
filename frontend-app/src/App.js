@@ -1,33 +1,30 @@
-import { useEffect } from 'react';
-import './App.css';
+import { Route, Routes } from "react-router-dom";
+import Dashboard from "./dashboard";
+import PrivateRoute from "./PrivateRoute";
+import Login from "./Login/login";
+import Home from "./homepage/home";
+import AssignmentView from "./AssignmentView/assignmentview";
+
 
 function App() {
-console.log("Hello");
 
-useEffect(()=>{
-  const reqBody = {
-    username:"selva",
-    password:"selva"
-  }
-  fetch('api/auth/login',{
-    headers:{
-      "Content-Type":"application/json"
-    },
-    method:"post",
-    body:JSON.stringify(reqBody),
-  }).then((response)=> { return Promise.all([response.json(),response.headers]
-    )})
-    .then(([body,headers]) => {
-      console.log("Header :  "+headers.get("authorization"));
-      console.log(body);
-    });
-
-},[]);
-  
+  console.log("Inside App.js");
   return (
-    <div className="App">
-     <h1> Hello World!!!</h1>
-    </div>
+    <Routes>
+       <Route path="/login" element={<Login/>} />
+      <Route path="/dashboard" element={
+      <PrivateRoute>
+      <Dashboard/>
+      </PrivateRoute>} />
+      <Route path="/" element ={<Home/>} />
+
+      <Route path="/dashboard/assignments/:id" element ={
+        <PrivateRoute>
+      <AssignmentView/>
+      </PrivateRoute>} />
+
+
+    </Routes>
   );
 }
 

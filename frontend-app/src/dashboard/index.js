@@ -35,7 +35,7 @@ function Dashboard(){
             else
             return Promise.reject("User not Authorized");
         }).then((data) => {
-            console.log(data);
+            console.log("Inside Create Assignment:  " +data);
             window.location.href = '/assignments/'+data.id;
         }
         ).catch((message) =>{

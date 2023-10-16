@@ -37,7 +37,7 @@ public class JwtFilter extends OncePerRequestFilter{
 		
 		//Get Authorization header and validate
 		final String header = request.getHeader(HttpHeaders.AUTHORIZATION);
-		if(!StringUtils.hasText(header) || (StringUtils.hasText(header) && header.startsWith("Bearer "))) {
+		if(!StringUtils.hasText(header) || (StringUtils.hasText(header) && !header.startsWith("Bearer "))) {
 			filterChain.doFilter(request,response);
 			return;
 		}

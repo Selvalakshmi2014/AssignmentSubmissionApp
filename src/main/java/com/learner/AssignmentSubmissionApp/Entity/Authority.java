@@ -20,6 +20,10 @@ public class Authority implements GrantedAuthority{
 	
 
 	
+	public Authority() {
+		super();
+		}
+
 	public Authority(String role) {
 		this.role = role;
 	}

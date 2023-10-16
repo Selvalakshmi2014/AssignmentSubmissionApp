@@ -60,7 +60,7 @@ public class SecurityConfig {
 					response.sendError(HttpServletResponse.SC_UNAUTHORIZED, authEx.getMessage());
 				})).sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(
-						auth -> auth.requestMatchers("/api/auth/**").permitAll().anyRequest().authenticated());
+						auth -> auth.requestMatchers("/api/**").permitAll().anyRequest().authenticated());
 		/*
 		 * .authorizeHttpRequests(auth ->
 		 * auth.requestMatchers("/api/auth/**").permitAll()
