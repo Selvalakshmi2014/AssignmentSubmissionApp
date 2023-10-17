@@ -18,7 +18,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Component
 public class JwtUtil implements Serializable {
 
-	private static final long JWT_TOKEN_VALIDITY = 30*24*60*60;
+	private static final long JWT_TOKEN_VALIDITY = 24*60*60;
 	
 	@Value("${jwt.secret}")
 	private String SECRET; // Replace with a secure secret key
@@ -60,7 +60,7 @@ public class JwtUtil implements Serializable {
                 .compact();
     }
 
-    public boolean isTokenExpired(String token) {
+    private boolean isTokenExpired(String token) {
         return getExpirationDateFromToken(token).before(new Date());
     }
 
@@ -72,7 +72,6 @@ public class JwtUtil implements Serializable {
     public Boolean canTokenBeRefreshed(String token) {
     	return (!isTokenExpired(token));
     }
-    // Additional utility methods...
-}
+  }
 
 

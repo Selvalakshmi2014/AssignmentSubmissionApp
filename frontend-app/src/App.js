@@ -4,6 +4,7 @@ import PrivateRoute from "./PrivateRoute";
 import Login from "./Login/login";
 import Home from "./homepage/home";
 import AssignmentView from "./AssignmentView/assignmentview";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 function App() {

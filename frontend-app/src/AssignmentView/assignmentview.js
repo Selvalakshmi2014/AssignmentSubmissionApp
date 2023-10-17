@@ -27,23 +27,13 @@ const AssignmentView = () =>{
     }
     
     useEffect(() => {
-        fetch('/api/assignments/'+assignmentId,{
-            headers : {
-                "Content-Type" : "application/json",
-                AUTHORIZATION : 'Bearer '+jwt,
-            },
-            
-            method : "GET"
-        }).then((response) => {
-            if(response.status === 200) return response.json();
-            else
-            return Promise.reject("User not Authorized");
-        }).then((assignmentData) => {
+        ajax('/api/assignments/'+assignmentId,"GET",jwt)
+        .then((assignmentData) => {
+            if(assignmentData.branch === null) assignmentData.branch = "";
+            if(assignmentData.githubUrl === null) assignmentData.githubUrl = "";
             setAssignment(assignmentData);
         }
-        ).catch((message) =>{
-            alert(message);
-        });
+        )
     },[]);
     return(
         <div>

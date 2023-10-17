@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import useLocalState from "../util/useLocalStorage";
 import { Link } from 'react-router-dom';
+import ajax from '../services/fetchService';
 
 
 function Dashboard(){
@@ -8,33 +9,16 @@ function Dashboard(){
     const [assignments,setAssignments] = useState(null);
 
     useEffect(() =>{
-        fetch('api/assignments',{
-            headers :{
-            'Content-Type':"application/json",
-            AUTHORIZATION:'Bearer '+jwt
-            },
-            method :"GET"
-            }).then((response) =>{
-                if(response.status === 200) return response.json();
-            }).then((assignmentsData) =>{
+        ajax('api/assignments',"GET",jwt)
+        .then((assignmentsData) =>{
                 setAssignments(assignmentsData);
             })
 
     },[]);
 
     function createAssignment(){
-         fetch('api/assignments',{
-            headers : {
-                "Content-Type" : "application/json",
-                AUTHORIZATION : 'Bearer '+jwt,
-            },
-            
-            method : "POST"
-        }).then((response) => {
-            if(response.status === 200) return response.json();
-            else
-            return Promise.reject("User not Authorized");
-        }).then((data) => {
+        ajax('api/assignments',"POST",jwt)
+         .then((data) => {
             console.log("Inside Create Assignment:  " +data);
             window.location.href = '/assignments/'+data.id;
         }
@@ -45,7 +29,7 @@ function Dashboard(){
     }
     return(
         <div style={{margin : "2em"}}>
-            {assignments ? assignments.map((assignment) => <div>
+            {assignments ? assignments.map((assignment) => <div key={assignment.id}>
                <Link to={'assignments/'+assignment.id}> Assignment ID : {assignment.id}</Link>
             </div>) : <></>}
             <button type="submit" onClick = {() => createAssignment()}>Submit New Assignment</button>
